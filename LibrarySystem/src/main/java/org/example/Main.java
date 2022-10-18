@@ -68,7 +68,8 @@ public class Main {
                         2 - Менеджер // Сколько книг по конкретной теме
                         3 - Менеджер // Какие книги брал читатель
                         4 - Менеджер // Статистика по книгам
-                        5 - Выйти из меню управления менеджером
+                        5 - Менеджер // Лог выдачи книг
+                        6 - Выйти из меню управления менеджером
                         """);
 
                     Scanner manager_menu = new Scanner(System.in);
@@ -117,8 +118,7 @@ public class Main {
                             manager1.findBooksDistribution(all_readers, books);
                         }
                         case (5) -> {
-                            System.out.println(books.getAllDataList());
-                            System.out.println(books.getRowFromIndex(4));
+                            System.out.println(libraryEmployee1.getLog());
                         }
                     }
                 }

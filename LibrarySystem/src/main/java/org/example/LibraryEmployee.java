@@ -71,4 +71,8 @@ public class LibraryEmployee extends Employee {
             throw new RuntimeException(e);
         }
     }
+    public String getLog() {
+        return log.toString();
+    }
+
 }
