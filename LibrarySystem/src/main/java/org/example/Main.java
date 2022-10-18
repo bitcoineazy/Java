@@ -1,24 +1,22 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-
+        System.out.println("213123");
         Book books = new Book();
 
-        try {
-            //ArrayList<Integer> idBooks = books.getIdBooks();
-            HashMap<String, String> data = books.getRowFromIndex(3);
-
-            System.out.println("DATA" + data);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println(books.getRowFromIndex(3));
+//        try {
+//            //ArrayList<Integer> idBooks = books.getIdBooks();
+//            HashMap<String, String> data = books.getRowFromIndex(3);
+//
+//            System.out.println("DATA" + data);
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
         int selectedOption = -1;
 
@@ -47,10 +45,11 @@ public class Main {
         //manager1.createNewBook(1, "dDS", "Dasd", "dasdas", "dasd", 1999, "dasd");
         System.out.println(books.getRowFromIndex(1));
         System.out.println("""
-                1 - Менеджер // Создать новую книгу
+                1 - Менеджер // Меню управления
                 2 - Менеджер // Сколько книг по конкретной теме
                 3 - Менеджер // Какие книги брал читатель
                 4 - Менеджер // Статистика по книгам
+                5 - Вывести информацию
                 """);
         while (selectedOption != 20) {
             Scanner menu = new Scanner(System.in);
@@ -62,7 +61,7 @@ public class Main {
                                    Меню менеджера
                                    
                         1 - Менеджер // Создать новую книгу
-                        2 - Менеджер // Сколько книг по конкретной теме
+                        2 - Работники // Сколько книг по конкретной теме
                         3 - Менеджер // Какие книги брал читатель
                         4 - Менеджер // Статистика по книгам
                         5 - Выйти из меню управления менеджером
@@ -79,7 +78,8 @@ public class Main {
 
                             System.out.println("Введите название новой книги: ");
                             Scanner name_scanner = new Scanner(System.in);
-                            String book_name = name_scanner.nextLine();
+                            String name_scanned = name_scanner.nextLine();
+                            System.out.println(name_scanned);
 
                             System.out.println("Введите автора новой книги: ");
                             Scanner author_scanner = new Scanner(System.in);
@@ -101,15 +101,27 @@ public class Main {
                             Scanner category_scanner = new Scanner(System.in);
                             String book_category = category_scanner.nextLine();
 
-                            manager1.createNewBook(book_id, book_name, book_author, book_edition, book_publisher, book_year, book_category);
+                            manager1.createNewBook(book_id, name_scanned, book_author, book_edition, book_publisher, book_year, book_category);
 
                             System.out.println(books.getAllDataList());
                         }
                         // Какие книги брал читатель
                         case (3) -> {
-
+                            manager1.findBooksByReader(all_readers);
+                        }
+                        // Менеджер статистика по книгам
+                        case (4) -> {
+                            manager1.findBooksDistribution(all_readers, books);
+                        }
+                        case (5) -> {
+                            System.out.println(books.getAllDataList());
+                            System.out.println(books.getRowFromIndex(4));
                         }
                     }
+                }
+                case (5) -> {
+                    System.out.println(books.getAllDataList());
+                    System.out.println(books.getRowFromIndex(4));
                 }
             }
 
