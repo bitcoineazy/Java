@@ -49,8 +49,8 @@ public class Manager extends Employee {
     public void findBooksByReader(List<Reader> all_readers) {
         // Менеджер ищет книги, которые брал конкретный читатель
         for (Reader reader: all_readers
-             ) {
-            System.out.println(reader.bookIds);
+        ) {
+            System.out.println(reader.name + " " + reader.surname + " " + reader.bookIds);
         }
 
     }
