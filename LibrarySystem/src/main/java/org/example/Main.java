@@ -33,28 +33,28 @@ public class Main {
         Reader reader1 = new Reader(2, "Second Manager", "Surname2",
                 "MiddleName2", "address2", 0, reader_books);
 
-        //reader1.takeBook(books, libraryEmployee1, 1);
-        //reader1.takeBook(books, libraryEmployee1, 20);
-        //reader1.takeBook(books, libraryEmployee1, 20);
+        reader1.takeBook(books, libraryEmployee1, 1);
+        reader1.takeBook(books, libraryEmployee1, 2);
+        reader1.takeBook(books, libraryEmployee1, 3);
 
-        //all_readers.add(reader1);
+        all_readers.add(reader1);
 
-        //System.out.println(reader1.bookIds);
-        //System.out.println(reader1.bookAmount);
-        //manager1.findBooksDistribution(all_readers, books);
-        //System.out.println(manager1.findBooksByCategory("roman"));
-        //System.out.println(books.getRowFromIndex(2));
+        System.out.println(reader1.bookIds);
+        System.out.println(reader1.bookAmount);
+        manager1.findBooksDistribution(all_readers, books);
+        System.out.println(manager1.findBooksByCategory("roman"));
+        System.out.println(books.getRowFromIndex(2));
 
         //manager1.createNewBook(1, "dDS", "Dasd", "dasdas", "dasd", 1999, "dasd");
         System.out.println(books.getRowFromIndex(1));
-        /*
+
         System.out.println("""
                 1 - Менеджер // Создать новую книгу
                 2 - Менеджер // Сколько книг по конкретной теме
                 3 - Менеджер // Какие книги брал читатель
                 4 - Менеджер // Статистика по книгам
                 """);
-         */
+
         while (selectedOption != 20) {
             Scanner menu = new Scanner(System.in);
             System.out.println("Введите команду: ");

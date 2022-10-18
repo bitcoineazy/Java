@@ -105,6 +105,7 @@ public class Book {
      */
     public ArrayList<Integer> getIdBooks() throws Exception {
         startRead("id");
+        IDBooks.clear();
         String id = getLine();
         while (id != null) {
             IDBooks.add(Integer.parseInt(id));
