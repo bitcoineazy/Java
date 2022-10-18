@@ -104,7 +104,7 @@ public class Main {
                             Scanner category_scanner = new Scanner(System.in);
                             String book_category = category_scanner.nextLine();
 
-                            manager1.createNewBook(book_id, name_scanned, book_author, book_edition, book_publisher, book_year, book_category);
+                            manager1.createNewBook(book_id, book_name, book_author, book_edition, book_publisher, book_year, book_category);
 
                             System.out.println(books.getAllDataList());
                         }
