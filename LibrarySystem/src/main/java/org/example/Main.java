@@ -34,7 +34,10 @@ public class Main {
         reader1.takeBook(books, libraryEmployee1, 2);
         reader1.takeBook(books, libraryEmployee1, 3);
 
+
         all_readers.add(reader1);
+
+        manager1.findBooksByReaders(all_readers);
 
         System.out.println(reader1.bookIds);
         System.out.println(reader1.bookAmount);
@@ -133,12 +136,17 @@ public class Main {
                             System.out.println("Введите ID читателя: ");
                             Scanner reader_scanner = new Scanner(System.in);
                             int reader_id = reader_scanner.nextInt();
-
-                            System.out.println("Введите ID книги: ");
+                            System.out.println("Введите ID книги, которую хотите взять: ");
                             int book_id = reader_scanner.nextInt();
+                            for (Reader reader: all_readers) {
+                                if (reader.id == reader_id) {
+                                    System.out.println("Читатель найден");
+                                    libraryEmployee1.giveBookToReader(books, reader, book_id);
+                                } else {
+                                    System.out.println("Читатель c таким ID не найден");
+                                }
+                            }
 
-
-                            libraryEmployee1.giveBookToReader(books, reader1, book_id);
                         }
                         case (2) -> {
 

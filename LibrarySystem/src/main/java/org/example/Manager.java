@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,5 +66,16 @@ public class Manager extends Employee {
         }
         System.out.println("Кол-во книг у читателей: " + reader_books);
         System.out.println("Кол-во книг в библиотеке: " + books.getIdBooks().size());
+    }
+
+    public void findBooksByReaders(List<Reader> all_readers) {
+        ArrayList<Integer> readerBookIds = new ArrayList<>();
+        for (Reader reader: all_readers) {
+            for (Integer taken_id: reader.bookIds
+                 ) {
+                readerBookIds.add(taken_id);
+            }
+        }
+        System.out.println(readerBookIds);
     }
 }
