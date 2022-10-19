@@ -49,11 +49,13 @@ public class Main {
         System.out.println(books.getRowFromIndex(1));
         while (selectedOption != 20) {
             System.out.println("""
+                
                 1 - Менеджер // Интерфейс управления
                 2 - Читатель // Интерфейс читателя
                 3 - Библиотечный работник // Интерфейс работника
                 4 - Менеджер // Статистика по книгам
                 5 - Вывести информацию
+                
                 """);
             Scanner menu = new Scanner(System.in);
             System.out.println("Введите команду: ");
@@ -162,6 +164,65 @@ public class Main {
                             }
                         } else {
                             System.out.println("Читатель c таким ID не найден");}
+                    }
+                }
+                case (3) -> {
+                    System.out.println("""
+                                Меню библиотечного работника
+                        1 - Библиотечный работник // Искать книги по заданному критерию
+                        """);
+                    Scanner reader_menu = new Scanner(System.in);
+                    int readerOption = reader_menu.nextInt();
+                    switch (readerOption) {
+                        case (1) ->  {
+                            System.out.println("""
+                            1 - Поиск по названию
+                            2 - Поиск по автору
+                            3 - Поиск по теме
+                            4 - Поиск по году издания
+                            5 - Поиск по издателю
+                            
+                            Введите номер интересующего поиска:
+                            """);
+                            Scanner reader_option = new Scanner(System.in);
+                            int reader_criteria = reader_option.nextInt();
+                            switch (reader_criteria) {
+                                // Поиск по названию
+                                case (1) -> {
+                                    System.out.println("Введите название для поиска: ");
+                                    HashMap<String, String> criteria = new HashMap<>();
+
+                                    Scanner criteria_name = new Scanner(System.in);
+                                    String user_criteria = criteria_name.nextLine();
+                                    criteria.put("name", user_criteria);
+                                    System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
+                                }
+                                case (2) -> {
+                                    System.out.println("Введите автора для поиска: ");
+                                    HashMap<String, String> criteria = new HashMap<>();
+
+                                    Scanner criteria_name = new Scanner(System.in);
+                                    String user_author = criteria_name.nextLine();
+                                    criteria.put("author", user_author);
+                                    System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
+                                }
+                                case (3) -> {
+                                    System.out.println("Введите тему для поиска: ");
+                                    HashMap<String, String> criteria = new HashMap<>();
+
+                                    Scanner criteria_name = new Scanner(System.in);
+                                    String user_category = criteria_name.nextLine();
+                                    criteria.put("category", user_category);
+                                    System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
+                                }
+                            }
+                            HashMap<String, String> options = new HashMap<>();
+
+                            options.put("name", "null");
+                            options.put("author", "eqwe");
+                            ArrayList<Integer> ids = manager1.findBooksByReaders(all_readers);
+                            libraryEmployee1.getBooksByCriteria(books, options);
+                        }
                     }
                 }
                     }
