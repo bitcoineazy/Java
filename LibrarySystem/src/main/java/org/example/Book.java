@@ -63,7 +63,6 @@ public class Book {
         try {
             allData = getAllData();
             getIdBooks();
-            //System.out.println(allData);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -106,6 +105,7 @@ public class Book {
      */
     public ArrayList<Integer> getIdBooks() throws Exception {
         startRead("id");
+        IDBooks.clear();
         String id = getLine();
         while (id != null) {
             IDBooks.add(Integer.parseInt(id));
@@ -184,6 +184,10 @@ public class Book {
             while (character != -1) {
                 // Если считанный символ это переход на новую строку, то считывание прерывается
                 // и возвращается индекс новой строки
+                if (character == 13) {
+                    character = reader.read();
+                    continue;
+                }
                 if (character == 10){
                     Index++;
                     return Index;
@@ -213,6 +217,10 @@ public class Book {
             character = reader.read();
             // пока в файле есть символы считываем их
             while (character != -1) {
+                if (character == 13) {
+                    character = reader.read();
+                    continue;
+                }
                 if (character == 10){
                     // Если считанный символ это переход на новую строку, то считывание прерывается
                     // и возвращается значение считанной строки
