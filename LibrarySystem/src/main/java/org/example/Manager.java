@@ -12,7 +12,6 @@ public class Manager extends Employee {
     public void createNewBook(int id, String name, String author, String edition, String publisher, int publication_year, String category) throws Exception {
         HashMap<String , String> addBook = new HashMap<>();
         addBook.put("id", Integer.toString(id));
-        addBook.put("name", name);
         addBook.put("author", author);
         addBook.put("edition", edition);
         addBook.put("publisher", publisher);
@@ -50,7 +49,7 @@ public class Manager extends Employee {
     public void findBooksByReader(List<Reader> all_readers) {
         // Менеджер ищет книги, которые брал конкретный читатель
         for (Reader reader: all_readers
-        ) {
+             ) {
             System.out.println(reader.name + " " + reader.surname + " " + reader.bookIds);
         }
 
