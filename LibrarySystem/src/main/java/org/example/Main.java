@@ -117,8 +117,11 @@ public class Main {
                             manager1.findBooksDistribution(all_readers, books);
                         }
                         case (5) -> {
-                            System.out.println(books.getAllDataList());
-                            System.out.println(books.getRowFromIndex(4));
+                            HashMap<String, String> options = new HashMap<>();
+                            options.put("name", "null");
+                            options.put("author", "eqwe");
+                            ArrayList<Integer> ids = manager1.findBooksByReaders(all_readers);
+                            libraryEmployee1.giveBookFromOption(books, reader1, options, ids);
                         }
                     }
                 }

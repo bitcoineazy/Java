@@ -68,7 +68,7 @@ public class Manager extends Employee {
         System.out.println("Кол-во книг в библиотеке: " + books.getIdBooks().size());
     }
 
-    public void findBooksByReaders(List<Reader> all_readers) {
+    public ArrayList<Integer> findBooksByReaders(List<Reader> all_readers) {
         ArrayList<Integer> readerBookIds = new ArrayList<>();
         for (Reader reader: all_readers) {
             for (Integer taken_id: reader.bookIds
@@ -76,6 +76,6 @@ public class Manager extends Employee {
                 readerBookIds.add(taken_id);
             }
         }
-        System.out.println(readerBookIds);
+        return readerBookIds;
     }
 }
