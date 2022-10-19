@@ -122,6 +122,7 @@ public class Main {
                             options.put("author", "eqwe");
                             ArrayList<Integer> ids = manager1.findBooksByReaders(all_readers);
                             libraryEmployee1.giveBookByOption(books, reader1, options, ids);
+                            System.out.println(libraryEmployee1.getBooksByCriteria(books, options));
                         }
                     }
                 }
