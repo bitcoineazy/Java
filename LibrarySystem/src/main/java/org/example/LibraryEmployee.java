@@ -18,6 +18,37 @@ public class LibraryEmployee extends Employee {
         readLog();
     }
 
+    public ArrayList<Integer> giveIDsBooksByCriteria(Book books, HashMap<String, String> bookOptions, ArrayList<Integer> IDGetBooks){
+        ArrayList<Integer> indexes_old = new ArrayList<>();
+        ArrayList<Integer> indexes_new = new ArrayList<>();
+        ArrayList<Integer> indexes = new ArrayList<>();
+        int count = 0;
+        for (Map.Entry entry: bookOptions.entrySet()) {
+            indexes.clear();
+            indexes_new = books.getIndexesFromValue((String) entry.getKey(), (String) entry.getValue());
+            if (count == 0){
+                indexes_old.addAll(indexes_new);
+            }
+            for (Integer index :indexes_new) {
+                if (indexes_old.contains(index)){
+                    indexes.add(index);
+                }
+            }
+            indexes_old.clear();
+            indexes_old.addAll(indexes);
+            count++;
+
+        }
+        ArrayList<Integer> IdsBook = new ArrayList<>();
+        for (Integer index :indexes_old) {
+            try {
+                IdsBook.add(Integer.valueOf(books.getRowFromIndex(index).get("id")));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return IdsBook;
+    }
     public void giveBookFromOption(Book books, Reader reader, HashMap<String, String> bookOptions, ArrayList<Integer> IDGetBooks){
         ArrayList<Integer> indexes_old = new ArrayList<>();
         ArrayList<Integer> indexes_new = new ArrayList<>();
