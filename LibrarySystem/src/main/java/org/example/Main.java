@@ -121,7 +121,7 @@ public class Main {
                             options.put("name", "null");
                             options.put("author", "eqwe");
                             ArrayList<Integer> ids = manager1.findBooksByReaders(all_readers);
-                            libraryEmployee1.giveBookFromOption(books, reader1, options, ids);
+                            libraryEmployee1.giveBookByOption(books, reader1, options, ids);
                         }
                     }
                 }
