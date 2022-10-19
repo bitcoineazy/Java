@@ -31,8 +31,6 @@ public class LibraryEmployee extends Employee {
         } else {
             System.out.println("В библиотеке не существует книги с ID: " + id);
         }
-
-
     }
 
     public void returnBookFromReader(Reader reader, int id) throws Exception {

@@ -47,14 +47,14 @@ public class Main {
 
         //manager1.createNewBook(1, "dDS", "Dasd", "dasdas", "dasd", 1999, "dasd");
         System.out.println(books.getRowFromIndex(1));
-        System.out.println("""
+        while (selectedOption != 20) {
+            System.out.println("""
                 1 - Менеджер // Интерфейс управления
                 2 - Читатель // Интерфейс читателя
                 3 - Библиотечный работник // Интерфейс работника
                 4 - Менеджер // Статистика по книгам
                 5 - Вывести информацию
                 """);
-        while (selectedOption != 20) {
             Scanner menu = new Scanner(System.in);
             System.out.println("Введите команду: ");
             selectedOption = menu.nextInt();
@@ -125,41 +125,42 @@ public class Main {
                 case (2) -> {
                     System.out.println("""
                                    Меню читателя
-                                   
-                        1 - Читатель // Попросить работника выдать книгу
-                        2 - Читатель // Вернуть книгу в библиотеку
+                        Введите ID читателя для работы (свой)
                         """);
-                    Scanner reader_menu = new Scanner(System.in);
-                    int readerOption = reader_menu.nextInt();
-                    switch (readerOption) {
-                        case (1) -> {
-                            System.out.println("Введите ID читателя: ");
-                            Scanner reader_scanner = new Scanner(System.in);
-                            int reader_id = reader_scanner.nextInt();
-                            System.out.println("Введите ID книги, которую хотите взять: ");
-                            int book_id = reader_scanner.nextInt();
-                            for (Reader reader: all_readers) {
-                                if (reader.id == reader_id) {
+                    Scanner reader_id_scanner = new Scanner(System.in);
+                    int readerId = reader_id_scanner.nextInt();
+                    for (Reader reader: all_readers) {
+                        if (reader.id == readerId) {
+                            System.out.println("Читатель найден");
+                            System.out.println("""
+                                       Меню читателя
+                            1 - Читатель // Попросить работника выдать книгу
+                            2 - Читатель // Вернуть книгу в библиотеку
+                            """);
+                            Scanner reader_menu = new Scanner(System.in);
+                            int readerOption = reader_menu.nextInt();
+                            switch (readerOption) {
+                                case (1) -> {
+                                    System.out.println("Введите ID книги, которую хотите взять: ");
+                                    Scanner reader_scanner = new Scanner(System.in);
+                                    int book_id = reader_scanner.nextInt();
+
                                     System.out.println("Читатель найден");
                                     libraryEmployee1.giveBookToReader(books, reader, book_id);
-                                } else {
-                                    System.out.println("Читатель c таким ID не найден");
-                                }
+
+                                    }
+                                case (2) -> {
+                                    System.out.println("Введите ID книги, которую хотите отдать: ");
+                                    Scanner reader_scanner = new Scanner(System.in);
+                                    int book_id = reader_scanner.nextInt();
+                                    libraryEmployee1.returnBookFromReader(reader, book_id);
+                                    }
                             }
-
-                        }
-                        case (2) -> {
-
-                        }
+                        } else {
+                            System.out.println("Читатель c таким ID не найден");}
                     }
-
                 }
-                case (5) -> {
-                    System.out.println(books.getAllDataList());
-                    System.out.println(books.getRowFromIndex(4));
+                    }
                 }
             }
         }
-    }
-
-}
