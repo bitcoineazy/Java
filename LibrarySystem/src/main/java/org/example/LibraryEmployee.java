@@ -49,7 +49,7 @@ public class LibraryEmployee extends Employee {
         }
         return IdsBook;
     }
-    public void giveBookFromOption(Book books, Reader reader, HashMap<String, String> bookOptions, ArrayList<Integer> IDGetBooks){
+    public void giveBookByOption(Book books, Reader reader, HashMap<String, String> bookOptions, ArrayList<Integer> IDGetBooks){
         ArrayList<Integer> indexes_old = new ArrayList<>();
         ArrayList<Integer> indexes_new = new ArrayList<>();
         ArrayList<Integer> indexes = new ArrayList<>();
