@@ -18,7 +18,7 @@ public class LibraryEmployee extends Employee {
         readLog();
     }
 
-    public ArrayList<Integer> giveIDsBooksByCriteria(Book books, HashMap<String, String> bookOptions, ArrayList<Integer> IDGetBooks){
+    public ArrayList<Integer> giveIDsBooksByCriteria(Book books, HashMap<String, String> bookOptions){
         ArrayList<Integer> indexes_old = new ArrayList<>();
         ArrayList<Integer> indexes_new = new ArrayList<>();
         ArrayList<Integer> indexes = new ArrayList<>();
