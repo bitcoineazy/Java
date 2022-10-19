@@ -18,7 +18,7 @@ public class LibraryEmployee extends Employee {
         readLog();
     }
 
-    public ArrayList<Integer> giveIDsBooksByCriteria(Book books, HashMap<String, String> bookOptions){
+    public ArrayList<HashMap<String, String>> getBooksByCriteria(Book books, HashMap<String, String> bookOptions){
         ArrayList<Integer> indexes_old = new ArrayList<>();
         ArrayList<Integer> indexes_new = new ArrayList<>();
         ArrayList<Integer> indexes = new ArrayList<>();
@@ -39,15 +39,15 @@ public class LibraryEmployee extends Employee {
             count++;
 
         }
-        ArrayList<Integer> IdsBook = new ArrayList<>();
+        ArrayList<HashMap<String, String>> BooksInfo = new ArrayList<>();
         for (Integer index :indexes_old) {
             try {
-                IdsBook.add(Integer.valueOf(books.getRowFromIndex(index).get("id")));
+                BooksInfo.add(books.getRowFromIndex(index));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
-        return IdsBook;
+        return BooksInfo;
     }
     public void giveBookByOption(Book books, Reader reader, HashMap<String, String> bookOptions, ArrayList<Integer> IDGetBooks){
         ArrayList<Integer> indexes_old = new ArrayList<>();
