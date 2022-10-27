@@ -118,10 +118,15 @@ public class LibraryEmployee extends Employee {
     }
 
     public void returnBookFromReader(Reader reader, int id) throws Exception {
-        reader.bookAmount -= 1;
-        reader.bookIds.remove(id);
-        log(String.format("Reader id %s, name %s, surname %s, middleName %s, address %s; return book with id %s",
-                reader.id, reader.name, reader.surname, reader.middleName, reader.address, id));
+        if (reader.bookIds.contains(id)) {
+            reader.bookAmount -= 1;
+            reader.bookIds.remove(Integer.valueOf(id));
+            System.out.println("Читатель успешно вернул книгу с ID: " + id + " в библиотеку");
+            log(String.format("Reader id %s, name %s, surname %s, middleName %s, address %s; return book with id %s",
+                    reader.id, reader.name, reader.surname, reader.middleName, reader.address, id));
+        } else {
+            System.out.println("У читателя нету такой книги");
+        }
     }
 
     public void readLog() {
