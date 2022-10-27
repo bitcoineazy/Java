@@ -9,14 +9,6 @@ public class Main {
         Book books = new Book();
 
         System.out.println(books.getRowFromIndex(3));
-//        try {
-//            //ArrayList<Integer> idBooks = books.getIdBooks();
-//            HashMap<String, String> data = books.getRowFromIndex(3);
-//
-//            System.out.println("DATA" + data);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
 
         int selectedOption = -1;
 
@@ -47,13 +39,13 @@ public class Main {
 
         //manager1.createNewBook(1, "dDS", "Dasd", "dasdas", "dasd", 1999, "dasd");
         System.out.println(books.getRowFromIndex(1));
-        while (selectedOption != 5) {
+        while (selectedOption != 4) {
             System.out.println("""
                 
                 1 - Менеджер // Интерфейс управления
                 2 - Читатель // Интерфейс читателя
                 3 - Библиотечный работник // Интерфейс работника
-                5 - Завершить работу
+                4 - Завершить работу
                 
                 """);
             Scanner menu = new Scanner(System.in);
@@ -68,6 +60,7 @@ public class Main {
                         2 - Менеджер // Сколько книг по конкретной теме
                         3 - Менеджер // Какие книги брал читатель
                         4 - Менеджер // Статистика по книгам
+                        5 - Менеджер // Расширенная статистика по книгам
                         """);
 
                     Scanner manager_menu = new Scanner(System.in);
@@ -82,7 +75,6 @@ public class Main {
                             System.out.println("Введите название новой книги: ");
                             Scanner name_scanner = new Scanner(System.in);
                             String name_scanned = name_scanner.nextLine();
-                            System.out.println(name_scanned);
 
                             System.out.println("Введите автора новой книги: ");
                             Scanner author_scanner = new Scanner(System.in);
@@ -104,9 +96,12 @@ public class Main {
                             Scanner category_scanner = new Scanner(System.in);
                             String book_category = category_scanner.nextLine();
 
-                            manager1.createNewBook(book_id, name_scanned, book_author, book_edition, book_publisher, book_year, book_category);
-
-                            System.out.println(books.getAllDataList());
+                            try {
+                                manager1.createNewBook(book_id, name_scanned, book_author, book_edition, book_publisher, book_year, book_category);
+                                System.out.println(books.getRowFromIndex(books.getIndexesFromValue("id", String.valueOf(book_id)).get(0)));
+                            } catch (Exception e) {
+                                System.out.println("Ошибка при добавлении книги: " + e);
+                            }
                         }
                         // Сколько книг по конкретной теме
                         case (2) -> {
@@ -122,6 +117,10 @@ public class Main {
                         // Менеджер статистика по книгам
                         case (4) -> {
                             manager1.findBooksDistribution(all_readers, books);
+                        }
+                        // Менеджер расширенная статистика
+                        case (5) -> {
+                            manager1.getAdvancedStatistics(books, libraryEmployee1);
                         }
                     }
                 }
@@ -144,24 +143,82 @@ public class Main {
                                    
                             1 - Читатель // Попросить работника выдать книгу
                             2 - Читатель // Вернуть книгу в библиотеку
+                            3 - Читатель // Попросить работника выдать книгу по заданному критерию
                             """);
                             Scanner reader_menu = new Scanner(System.in);
                             int readerOption = reader_menu.nextInt();
                             switch (readerOption) {
+                                // Попросить работника выдать книгу по ID
                                 case (1) -> {
-
                                     System.out.println("Введите ID книги, чтобы взять: ");
                                     Scanner reader_scanner_1 = new Scanner(System.in);
                                     int book_id = reader_scanner_1.nextInt();
-
                                     libraryEmployee1.giveBookToReader(books, ourReader, book_id);
                                 }
+                                // Попросить работника отдать книгу по ID
                                 case (2) -> {
                                     System.out.println("Введите ID книги, чтобы отдать: ");
                                     Scanner reader_scanner_2 = new Scanner(System.in);
                                     int book_id = reader_scanner_2.nextInt();
-
                                     libraryEmployee1.returnBookFromReader(ourReader, book_id);
+                                }
+                                // Попросить работника выдать первую попавшуюся книгу по заданному критерию
+                                case (3) -> {
+                                    System.out.println("""
+                                    1 - Выдать по названию
+                                    2 - Выдать по автору
+                                    3 - Выдать по теме
+                                    4 - Выдать по году издания
+                                    5 - Выдать по издателю
+                                    
+                                    Введите номер интересующего критерия для выдачи:
+                                    """);
+                                    HashMap<String, String> criteria_take = new HashMap<>();
+
+                                    Scanner reader_take_menu = new Scanner(System.in);
+                                    int readerTake = reader_take_menu.nextInt();
+                                    switch (readerTake) {
+                                        case (1) -> {
+                                            System.out.println("Введите название для выдачи: ");
+
+                                            Scanner criteria_name = new Scanner(System.in);
+                                            String user_criteria = criteria_name.nextLine();
+                                            criteria_take.put("name", user_criteria);
+                                            libraryEmployee1.giveBookByOption(books, ourReader, criteria_take, manager1.findBooksByReaders(all_readers));
+                                        }
+                                        case (2) -> {
+                                            System.out.println("Введите автора для выдачи: ");
+
+                                            Scanner criteria_name = new Scanner(System.in);
+                                            String user_criteria = criteria_name.nextLine();
+                                            criteria_take.put("author", user_criteria);
+                                            libraryEmployee1.giveBookByOption(books, ourReader, criteria_take, manager1.findBooksByReaders(all_readers));
+                                        }
+                                        case (3) -> {
+                                            System.out.println("Введите тему для поиска: ");
+
+                                            Scanner criteria_category = new Scanner(System.in);
+                                            String user_category = criteria_category.nextLine();
+                                            criteria_take.put("category", user_category);
+                                            libraryEmployee1.giveBookByOption(books, ourReader, criteria_take, manager1.findBooksByReaders(all_readers));
+                                        }
+                                        case (4) -> {
+                                            System.out.println("Введите год издания для поиска: ");
+
+                                            Scanner criteria_pubYear = new Scanner(System.in);
+                                            String user_pubYear = criteria_pubYear.nextLine();
+                                            criteria_take.put("publication_year", user_pubYear);
+                                            libraryEmployee1.giveBookByOption(books, ourReader, criteria_take, manager1.findBooksByReaders(all_readers));
+                                        }
+                                        case (5) -> {
+                                            System.out.println("Введите издателя для поиска: ");
+
+                                            Scanner criteria_publisher = new Scanner(System.in);
+                                            String user_publisher = criteria_publisher.nextLine();
+                                            criteria_take.put("publisher", user_publisher);
+                                            libraryEmployee1.giveBookByOption(books, ourReader, criteria_take, manager1.findBooksByReaders(all_readers));
+                                        }
+                                    }
                                 }
                             }
                         } else {
@@ -195,55 +252,52 @@ public class Main {
                                 case (1) -> {
                                     System.out.println("Введите название для поиска: ");
 
-
                                     Scanner criteria_name = new Scanner(System.in);
                                     String user_criteria = criteria_name.nextLine();
                                     criteria.put("name", user_criteria);
                                     System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
                                 }
+                                // Поиск по автору
                                 case (2) -> {
                                     System.out.println("Введите автора для поиска: ");
 
-                                    Scanner criteria_name = new Scanner(System.in);
-                                    String user_author = criteria_name.nextLine();
+                                    Scanner criteria_author = new Scanner(System.in);
+                                    String user_author = criteria_author.nextLine();
                                     criteria.put("author", user_author);
                                     System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
                                 }
+                                // Поиск по теме
                                 case (3) -> {
                                     System.out.println("Введите тему для поиска: ");
 
-                                    Scanner criteria_name = new Scanner(System.in);
-                                    String user_category = criteria_name.nextLine();
+                                    Scanner criteria_category = new Scanner(System.in);
+                                    String user_category = criteria_category.nextLine();
                                     criteria.put("category", user_category);
                                     System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
                                 }
+                                // Поиск по году издания
                                 case (4) -> {
                                     System.out.println("Введите год издания для поиска: ");
 
-                                    Scanner criteria_name = new Scanner(System.in);
-                                    String user_category = criteria_name.nextLine();
-                                    criteria.put("publication_year", user_category);
+                                    Scanner criteria_pubYear = new Scanner(System.in);
+                                    String user_pubYear = criteria_pubYear.nextLine();
+                                    criteria.put("publication_year", user_pubYear);
                                     System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
                                 }
+                                // Поиск по издателю
                                 case (5) -> {
                                     System.out.println("Введите издателя для поиска: ");
 
-                                    Scanner criteria_name = new Scanner(System.in);
-                                    String user_category = criteria_name.nextLine();
-                                    criteria.put("publisher", user_category);
+                                    Scanner criteria_publisher = new Scanner(System.in);
+                                    String user_publisher = criteria_publisher.nextLine();
+                                    criteria.put("publisher", user_publisher);
                                     System.out.println(libraryEmployee1.getBooksByCriteria(books, criteria));
                                 }
                             }
-//                            HashMap<String, String> options = new HashMap<>();
-//
-//                            options.put("name", "null");
-//                            options.put("author", "eqwe");
-//                            ArrayList<Integer> ids = manager1.findBooksByReaders(all_readers);
-//                            libraryEmployee1.getBooksByCriteria(books, options);
                         }
-                    }
-                }
                     }
                 }
             }
         }
+    }
+}
