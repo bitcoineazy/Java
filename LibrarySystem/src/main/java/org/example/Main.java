@@ -117,12 +117,7 @@ public class Main {
                             manager1.findBooksDistribution(all_readers, books);
                         }
                         case (5) -> {
-                            HashMap<String, String> options = new HashMap<>();
-                            options.put("name", "null");
-                            options.put("author", "eqwe");
-                            ArrayList<Integer> ids = manager1.findBooksByReaders(all_readers);
-                            libraryEmployee1.giveBookByOption(books, reader1, options, ids);
-                            System.out.println(libraryEmployee1.getBooksByCriteria(books, options));
+                            manager1.getAdvancedStatistics(books, libraryEmployee1);
                         }
                     }
                 }

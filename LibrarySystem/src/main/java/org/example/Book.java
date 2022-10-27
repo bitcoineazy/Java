@@ -451,4 +451,8 @@ public class Book {
     public ArrayList<Integer> getIDBooks(){
         return IDBooks;
     }
+
+    public int getLength() {
+        return length;
+    }
 }
