@@ -9,15 +9,26 @@ import java.util.Map;
 
 public class LibraryEmployee extends Employee {
 
+    /**
+     * Путь к каталогу с ресурсами
+     */
     private final String rootPath = "src/main/resources";
 
+    /**
+     * Строка с записями логов
+     */
     private StringBuilder log = new StringBuilder();
 
     public LibraryEmployee(int id, String name, String surname, String middleName, String address, int employeeId) {
         super(id, name, surname, middleName, address, employeeId);
-        readLog();
+        //readLog();
     }
 
+    /**
+     * @param books экземпляр класса {@link Book}
+     * @param bookOptions {@code HashMap<String, String>} содержащий {@link Book#columnsName атрибуты} как ключи и искомые значения
+     * @return Список с данными о книгах у которых искомы атрибуты
+     */
     public ArrayList<HashMap<String, String>> getBooksByCriteria(Book books, HashMap<String, String> bookOptions){
         ArrayList<Integer> indexes_old = new ArrayList<>();
         ArrayList<Integer> indexes_new = new ArrayList<>();
@@ -49,6 +60,14 @@ public class LibraryEmployee extends Employee {
         }
         return BooksInfo;
     }
+
+    /**
+     * Выдает книгу читателю основываясь на переданных опциях
+     * @param books экземпляр класса {@link Book}
+     * @param reader экземпляр класса {@link Reader}
+     * @param bookOptions {@code HashMap<String, String>} содержащий {@link Book#columnsName атрибуты} как ключи и искомые значения
+     * @param IDGetBooks Список книг уже взятых читателями
+     */
     public void giveBookByOption(Book books, Reader reader, HashMap<String, String> bookOptions, ArrayList<Integer> IDGetBooks) {
         ArrayList<Integer> indexes_old = new ArrayList<>();
         ArrayList<Integer> indexes_new = new ArrayList<>();
@@ -99,6 +118,13 @@ public class LibraryEmployee extends Employee {
 
     }
 
+    /**
+     * Работник выдает читателю книгу по ID
+     * @param books экземпляр класса {@link Book}
+     * @param reader экземпляр класса {@link Reader}
+     * @param id искомой книги
+     * @throws Exception При получении количества книг в библиотеке открывается файл с записью ID книг. В случае если не получается открыть файл вызывает исключение.
+     */
     public void giveBookToReader(Book books, Reader reader, int id) throws Exception {
         // Библиотечный работник ищет книгу и дает её читателю
         // Обновляя при этом читателя (кол-во книг, какие именно)
@@ -117,7 +143,13 @@ public class LibraryEmployee extends Employee {
         }
     }
 
-    public void returnBookFromReader(Reader reader, int id) throws Exception {
+    /**
+     * Возвращает взятуб книгу в библиотеку
+     * @param reader экземпляр класса {@link Reader}
+     * @param id взятой книги
+     * @throws Exception
+     */
+    public void returnBookFromReader(Reader reader, int id) {
         if (reader.bookIds.contains(id)) {
             reader.bookAmount -= 1;
             reader.bookIds.remove(Integer.valueOf(id));
@@ -146,6 +178,10 @@ public class LibraryEmployee extends Employee {
         }
     }
 
+    /**
+     * Запись даггых о взятии и возврате книги
+     * @param data Записываемые данные
+     */
     public void log(String data) {
         log.append(data + "\n");
         try {
@@ -158,6 +194,11 @@ public class LibraryEmployee extends Employee {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Геттер для переменной {@link LibraryEmployee#log}
+     * @return {@link LibraryEmployee#log}
+     */
     public String getLog() {
         return log.toString();
     }
