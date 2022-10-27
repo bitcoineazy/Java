@@ -48,10 +48,14 @@ public class Manager extends Employee {
         return books.getIndexesFromValue(column, attribute).size();
     }
 
-    public void findBooksByReader(List<Reader> all_readers) {
+    public void findBooksByReader(List<Reader> all_readers) throws Exception {
         // Менеджер ищет книги, которые брал конкретный читатель
         for (Reader reader: all_readers) {
             System.out.println("Имя: " + reader.name + " Фамилия: " + reader.surname + " ID книг, которые брал: " + reader.bookIds);
+            System.out.println("Книги читателя:");
+            for (int bookId: reader.bookIds) {
+                System.out.println(books.getRowFromIndex(books.getIndexesFromValue("id", String.valueOf(bookId)).get(0)));
+            }
         }
 
     }

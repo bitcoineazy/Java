@@ -39,6 +39,7 @@ public class Main {
 
         //manager1.createNewBook(1, "dDS", "Dasd", "dasdas", "dasd", 1999, "dasd");
         System.out.println(books.getRowFromIndex(1));
+        System.out.println("Добро пожаловать в систему управления библиотекой!");
         while (selectedOption != 4) {
             System.out.println("""
                 
@@ -47,9 +48,9 @@ public class Main {
                 3 - Библиотечный работник // Интерфейс работника
                 4 - Завершить работу
                 
+                Введите команду:
                 """);
             Scanner menu = new Scanner(System.in);
-            System.out.println("Введите команду: ");
             selectedOption = menu.nextInt();
             switch (selectedOption) {
                 case (1) -> {
@@ -61,6 +62,8 @@ public class Main {
                         3 - Менеджер // Какие книги брал читатель
                         4 - Менеджер // Статистика по книгам
                         5 - Менеджер // Расширенная статистика по книгам
+                        
+                        Введите команду:
                         """);
 
                     Scanner manager_menu = new Scanner(System.in);
@@ -230,6 +233,8 @@ public class Main {
                     System.out.println("""
                                 Меню библиотечного работника
                         1 - Библиотечный работник // Искать книги по заданному критерию
+                        
+                        Введите команду:
                         """);
                     Scanner reader_menu = new Scanner(System.in);
                     int readerOption = reader_menu.nextInt();
