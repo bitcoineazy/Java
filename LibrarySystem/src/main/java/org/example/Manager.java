@@ -78,4 +78,66 @@ public class Manager extends Employee {
         }
         return readerBookIds;
     }
+
+    public void getAdvancedStatistics(Book books, LibraryEmployee libraryEmployee) {
+        int length;
+        HashMap<String, String> dataBook;
+        ArrayList<HashMap<String, String>> repeatingBooks;
+        ArrayList<Integer> booksI = new ArrayList<>();
+        ArrayList<Integer> ignoringIndex = new ArrayList<>();
+        int uniqBooks = 0;
+        ArrayList<String> uniqName = new ArrayList<>();
+        ArrayList<String> uniqAuthor = new ArrayList<>();
+        ArrayList<String> uniqEdition = new ArrayList<>();
+        ArrayList<String> uniqPublisher = new ArrayList<>();
+        ArrayList<String> uniqPublication_year = new ArrayList<>();
+        ArrayList<String> uniqCategory = new ArrayList<>();
+
+        try {
+            books.getCountRows();
+            length = books.getLength();
+
+            for (int index = 1; index < length; index++) {
+                booksI.clear();
+                if (ignoringIndex.contains(index)){
+                    continue;
+                }
+                dataBook = books.getRowFromIndex(index);
+                dataBook.remove("id");
+                repeatingBooks = libraryEmployee.getBooksByCriteria(books, dataBook);
+                for (HashMap<String, String> book: repeatingBooks) {
+                    booksI.add(books.getIndexesFromValue("id", book.get("id")).get(0));
+                }
+                ignoringIndex.addAll(booksI);
+                if (!uniqName.contains(dataBook.get("name"))){
+                    uniqName.add(dataBook.get("name"));
+                }
+                if (!uniqAuthor.contains(dataBook.get("author"))){
+                    uniqAuthor.add(dataBook.get("author"));
+                }
+                if (!uniqEdition.contains(dataBook.get("edition"))){
+                    uniqEdition.add(dataBook.get("edition"));
+                }
+                if (!uniqPublisher.contains(dataBook.get("publisher"))){
+                    uniqPublisher.add(dataBook.get("publisher"));
+                }
+                if (!uniqPublication_year.contains(dataBook.get("publication_year"))){
+                    uniqPublication_year.add(dataBook.get("publication_year"));
+                }
+                if (!uniqCategory.contains(dataBook.get("category"))){
+                    uniqCategory.add(dataBook.get("category"));
+                }
+                uniqBooks++;
+            }
+            System.out.println("Уникальных книг: " + uniqBooks);
+            System.out.println("Уникальные имена: " + uniqName.toString());
+            System.out.println("Уникальные автор(ы): " + uniqAuthor.toString());
+            System.out.println("Уникальные издатель(и): " + uniqEdition.toString());
+            System.out.println("Уникальные издание(я): " + uniqPublisher.toString());
+            System.out.println("Уникальные годы издание(я): " + uniqPublication_year.toString());
+            System.out.println("Уникальные категория(и): " + uniqCategory.toString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
