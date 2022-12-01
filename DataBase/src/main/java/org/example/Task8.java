@@ -24,7 +24,7 @@ public class Task8 {
     }
 
     public static void main(String[] args) {
-        Menu mainMenu = new Menu();
+        Menu menu = new Menu();
         Menu changeMenu = new Menu();
 
 
@@ -128,7 +128,7 @@ public class Task8 {
                     throw new RuntimeException(e);
                 }
             });
-            mainMenu.addItem(1, "Добавить сотрудника", (stems, in) -> {
+            menu.addItem(1, "Добавить сотрудника", (stems, in) -> {
                 try {
 //                    System.out.print("id: ");
 //                    int id = in.nextInt();
@@ -154,7 +154,7 @@ public class Task8 {
                     throw new RuntimeException(e);
                 }
             });
-            mainMenu.addItem(2, "Получить сотрудника по ID", (stems, in) -> {
+            menu.addItem(2, "Получить сотрудника по ID", (stems, in) -> {
                 try {
                     System.out.print("Write id: ");
                     int id = in.nextInt();
@@ -163,7 +163,7 @@ public class Task8 {
                     throw new RuntimeException(e);
                 }
             });
-            mainMenu.addItem(3, "Получить сотрудника по имени", (stems, in) -> {
+            menu.addItem(3, "Получить сотрудника по имени", (stems, in) -> {
                 try {
                     System.out.print("Write name: ");
                     String name = in.next();
@@ -172,7 +172,7 @@ public class Task8 {
                     throw new RuntimeException(e);
                 }
             });
-            mainMenu.addItem(4, "Получить сотрудника по дате рождения", (stems, in) -> {
+            menu.addItem(4, "Получить сотрудника по дате рождения", (stems, in) -> {
                 try {
                     System.out.print("Write date of birth: ");
                     String date_of_birth = in.next();
@@ -181,13 +181,13 @@ public class Task8 {
                     throw new RuntimeException(e);
                 }
             });
-            mainMenu.addItem(5, "Изменить информацию о сотруднике", (stems, in) -> {
+            menu.addItem(5, "Изменить информацию о сотруднике", (stems, in) -> {
                 changeMenu.printMenu();
                 System.out.print(": ");
                 int selectedOption = in.nextInt();
                 changeMenu.run(selectedOption, stmt, in);
             });
-            mainMenu.addItem(6, "Удалить сотрудника", (stems, in) -> {
+            menu.addItem(6, "Удалить сотрудника", (stems, in) -> {
                 try {
                     System.out.print("ID сотрудника: ");
                     String id = in.next();
@@ -196,7 +196,7 @@ public class Task8 {
                     throw new RuntimeException(e);
                 }
             });
-            mainMenu.addItem(7, "Получить общую зарплату", (stems, in) -> {
+            menu.addItem(7, "Получить общую зарплату", (stems, in) -> {
                 try {
                     ResultSet res = stems.executeQuery("SELECT SUM(people.salary) FROM people");
                     res.next();
@@ -207,10 +207,10 @@ public class Task8 {
             });
             Scanner in = new Scanner(System.in);
             do {
-                mainMenu.printMenu();
+                menu.printMenu();
                 //System.out.print("");
                 int selectedOption = in.nextInt();
-                mainMenu.run(selectedOption, stmt, in);
+                menu.run(selectedOption, stmt, in);
             } while (true);
         } catch (SQLException e) {
             e.printStackTrace();
