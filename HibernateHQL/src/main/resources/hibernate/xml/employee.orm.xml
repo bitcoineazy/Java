@@ -1,0 +1,15 @@
+<hibernate-mapping>
+
+    <class name="Employee" table="people">
+        <id name="id" column="id" type="int" />
+        <property name="firstName" column="firstname" type="string" />
+        <property name="surname" column="surname" type="string" />
+        <property name="birthDate" column="date_of_birth" type="string" />
+        <property name="birthPlace" column="place_of_birth" type="string" />
+        <property name="salary" column="salary" type="int" />
+<!--        <property name="department" column="department" type="int" />-->
+        <many-to-one name = "department" column = "department" unique="true"
+                     class="Department" not-null="true"/>
+    </class>
+
+</hibernate-mapping>
