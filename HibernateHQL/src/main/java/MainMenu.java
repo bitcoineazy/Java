@@ -188,13 +188,8 @@ public class MainMenu {
                 changeMenu.run(selectedOption, null, in);
             });
             menu.addItem(6, "Удалить сотрудника", (stems, in) -> {
-//                try {
-//                    System.out.print("ID сотрудника: ");
-//                    String id = in.next();
-//                    stems.executeUpdate(String.format("DELETE FROM people WHERE id = %s", id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID сотрудника чтобы удалить: ");
+                manageEmployee.deleteEmployee(sessionFactory.openSession(), in.nextInt());
             });
             menu.addItem(7, "Получить общую зарплату", (stems, in) -> {
                 manageEmployee.getAllSalary(sessionFactory.openSession());

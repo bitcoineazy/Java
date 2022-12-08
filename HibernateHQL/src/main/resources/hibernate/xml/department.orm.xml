@@ -5,8 +5,8 @@
         <property name="title" column="title" type="string" />
         <property name="description" column="description" type="string" />
 <!--        <property name="director" column="director" type="int" />-->
-        <many-to-one name = "director" column = "director" unique="true" fetch="join" update="true" optimistic-lock="true"
-                     class="Employee" not-null="true"/>
+        <many-to-one name = "director" column = "director" unique="true"
+                     class="Employee" not-null="false" cascade="all"/>
     </class>
 
 </hibernate-mapping>

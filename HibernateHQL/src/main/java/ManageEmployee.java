@@ -202,6 +202,29 @@ public class ManageEmployee {
         return employeeID;
     }
 
+    public void deleteEmployee(Session session, Integer employeeID){
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, employeeID);
+            List<Department> departments = session.createQuery(String.format("FROM Department WHERE director='%s'", employeeID)).list();
+            for (Department department: departments) {
+                System.out.println(department);
+                session.evict(department);
+                session.delete(department);
+            }
+            session.evict(employee);
+            session.delete(employee);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
     public void getEmployeeById(Session session, int employeeId) {
         Transaction tx = null;
         Employee employee = null;
@@ -219,7 +242,6 @@ public class ManageEmployee {
 
     public void getEmployeeByName(Session session, String firstname) {
         Transaction tx = null;
-//        Session session = sessionFactory.openSession();
         try {
             tx = session.beginTransaction();
             List<Employee> employees = session.createQuery(String.format("FROM Employee WHERE firstName='%s'", firstname)).list();
@@ -237,7 +259,6 @@ public class ManageEmployee {
 
     public void getEmployeeByBirthDate(Session session, String birthDate) {
         Transaction tx = null;
-//        Session session = sessionFactory.openSession();
         try {
             tx = session.beginTransaction();
             List<Employee> employees = session.createQuery(String.format("FROM Employee WHERE birthDate='%s'", birthDate)).list();
@@ -257,27 +278,21 @@ public class ManageEmployee {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
+
             Employee employee = (Employee)session.get(Employee.class, EmployeeID);
 
-//            Employee new_employee = employee;
+            Integer oldEmployeeId = employee.getId();
+            session.evict(employee);
             employee.setId(id);
-//            Integer new_employeeID = (Integer) session.save(new_employee);
+            session.save(employee);
 
 
-            Query<Department> queryDeps = session.createQuery(String.format("FROM Department WHERE director='%d'", employee.getId()));
+            Query<Department> queryDeps = session.createQuery(String.format("FROM Department WHERE director='%d'", oldEmployeeId));
             List<Department> departments = queryDeps.getResultList();
             for (Department department: departments) {
                 System.out.println(department.toString());
                 department.setDirector(employee);
             }
-
-
-
-//            System.out.println(department.getId(5));
-//            Department department = (Department)session.get(Department.class, employee.getDepartment());
-
-//            employee.setId(id);
-
 
             tx.commit();
         } catch (HibernateException e) {

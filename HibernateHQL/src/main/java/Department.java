@@ -1,7 +1,11 @@
+import jakarta.persistence.*;
+
 public class Department {
     private int id;
     private String title;
     private String description;
+    @OneToOne(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "director")
     Employee director;
 
     public Department () {

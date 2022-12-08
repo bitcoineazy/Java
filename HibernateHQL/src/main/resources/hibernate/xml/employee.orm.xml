@@ -1,6 +1,6 @@
 <hibernate-mapping>
 
-    <class name="Employee" table="people" mutable="true" polymorphism="implicit" dynamic-update="false" select-before-update="false">
+    <class name="Employee" table="people">
         <id name="id" column="id" type="int">
         <generator class="native"/>
         </id>
@@ -11,7 +11,7 @@
         <property name="salary" column="salary" type="int" />
 <!--        <property name="department" column="department" type="int" />-->
         <many-to-one name = "department" column = "department" unique="true"
-                     class="Department" not-null="true"/>
+                     class="Department" not-null="false" cascade="all"/>
     </class>
 
 </hibernate-mapping>
