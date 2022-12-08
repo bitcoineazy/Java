@@ -1,7 +1,9 @@
 <hibernate-mapping>
 
-    <class name="Employee" table="people">
-        <id name="id" column="id" type="int" />
+    <class name="Employee" table="people" mutable="true" polymorphism="implicit" dynamic-update="false" select-before-update="false">
+        <id name="id" column="id" type="int">
+        <generator class="native"/>
+        </id>
         <property name="firstName" column="firstname" type="string" />
         <property name="surname" column="surname" type="string" />
         <property name="birthDate" column="date_of_birth" type="string" />

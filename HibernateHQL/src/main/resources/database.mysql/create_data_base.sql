@@ -2,7 +2,7 @@ USE db;
 DROP TABLE IF EXISTS people;
 CREATE TABLE people
 (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255),
     surname VARCHAR(255),
     date_of_birth DATE NULL DEFAULT NULL,
@@ -20,10 +20,10 @@ VALUES
 DROP TABLE IF EXISTS department;
 CREATE TABLE department
 (
-    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255),
     description VARCHAR(255),
-    director INT UNSIGNED,
+    director INT,
     FOREIGN KEY (director) REFERENCES people(id)
 
 );

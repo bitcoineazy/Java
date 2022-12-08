@@ -31,6 +31,7 @@ public class MainMenu {
     public static void main(String[] args) {
         Menu menu = new Menu();
         Menu changeMenu = new Menu();
+        Menu changeDepartmentMenu = new Menu();
 
         Configuration configuration = new Configuration();
         configuration.configure("hibernate/xml/hibernate.cfg.xml");
@@ -40,35 +41,35 @@ public class MainMenu {
 
         // Initialize Session Object
         Session session = sessionFactory.openSession();
-//
-//        // Get all entries using Criteria API
-//        System.out.println("Getting all people using the Criteria API");
-//        List<Employee> entriesCriteria=CommonMethods.getAllEntriesUsingCriteriaApi(session, Employee.class);
-//        for(Employee entry:entriesCriteria)
-//        {
-//            System.out.println(entry);
-//        }
-//
-//        // Get all entries using HQL
-//        System.out.println("Getting all people using JPQL");
-//        List<Employee> entriesHQL= CommonMethods.getAllEntriesUsingHQL(session, Employee.class);
-//        for(Employee entry:entriesHQL)
-//        {
-//            System.out.println(entry);
-//        }
-//
-//        System.out.println("Get all departments using JPQL");
-//        List<Department> entriesDepartmentHQL= CommonMethods.getAllDepartmentsUsingHQL(session, Department.class);
-//        for(Department entry:entriesDepartmentHQL)
-//        {
-//            System.out.println(entry);
-//        }
+
+        // Get all entries using Criteria API
+        System.out.println("Getting all people using the Criteria API");
+        List<Employee> entriesCriteria=CommonMethods.getAllEntriesUsingCriteriaApi(session, Employee.class);
+        for(Employee entry:entriesCriteria)
+        {
+            System.out.println(entry);
+        }
+
+        // Get all entries using HQL
+        System.out.println("Getting all people using JPQL");
+        List<Employee> entriesHQL= CommonMethods.getAllEntriesUsingHQL(session, Employee.class);
+        for(Employee entry:entriesHQL)
+        {
+            System.out.println(entry);
+        }
+
+        System.out.println("Get all departments using JPQL");
+        List<Department> entriesDepartmentHQL= CommonMethods.getAllDepartmentsUsingHQL(session, Department.class);
+        for(Department entry:entriesDepartmentHQL)
+        {
+            System.out.println(entry);
+        }
 //        //session.close();
 
         ManageEmployee manageEmployee = new ManageEmployee();
 
-//        manageEmployee.getAllEmployees();
-//        manageEmployee.getAllDepartments();
+        manageEmployee.getAllEmployees(session);
+        manageEmployee.getAllDepartments(session);
 //
 //        System.out.println("Get employee by ID");
 //        manageEmployee.getEmployeeById(1);
@@ -76,122 +77,109 @@ public class MainMenu {
 //        manageEmployee.getEmployeeByBirthDate("2000-01-01");
 
         try {
-
             changeMenu.addItem(1, "id", (stems, in) -> {
-//                System.out.print("id employer: ");
-//                Integer id = in.nextInt();
-//                System.out.print("new id: ");
-//                Integer new_id = in.nextInt();
-//                try {
-//                    stems.executeUpdate(String.format("UPDATE people SET id = %s where id = %s", new_id, id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID сотрудника, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новый ID сотрудника: ");
+                int newId = in.nextInt();
+                manageEmployee.updateEmployeeId(sessionFactory.openSession(), existingId, newId);
             });
             changeMenu.addItem(2, "name", (stems, in) -> {
-//                System.out.print("id employer: ");
-//                String id = in.next();
-//                System.out.print("new firstname: ");
-//                String new_name = in.next();
-//                try {
-//                    stems.executeUpdate(String.format("UPDATE people SET firstname = '%s' where id = %s", new_name, id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID сотрудника, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новое имя сотрудника: ");
+                String newName = in.next();
+                manageEmployee.updateEmployeeName(sessionFactory.openSession(), existingId, newName);
             });
             changeMenu.addItem(3, "surname", (stems, in) -> {
-//                System.out.print("id employer: ");
-//                String id = in.next();
-//                System.out.print("new surname: ");
-//                String new_surname = in.next();
-//                try {
-//                    stems.executeUpdate(String.format("UPDATE people SET surname = '%s' where id = %s", new_surname, id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID сотрудника, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новую фамилию сотрудника: ");
+                String newSurname = in.next();
+                manageEmployee.updateEmployeeSurname(sessionFactory.openSession(), existingId, newSurname);
             });
             changeMenu.addItem(4, "date_of_birth", (stems, in) -> {
-//                System.out.print("id employer: ");
-//                String id = in.next();
-//                System.out.print("new date_of_birth: ");
-//                String new_date_of_birth = in.next();
-//                try {
-//                    stems.executeUpdate(String.format("UPDATE people SET date_of_birth = '%s' where id = %s", new_date_of_birth, id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID сотрудника, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новую дату рождения сотрудника: ");
+                String newDate = in.next();
+                manageEmployee.updateEmployeeBirthdate(sessionFactory.openSession(), existingId, newDate);
             });
             changeMenu.addItem(5, "place_of_birth", (stems, in) -> {
-//                System.out.print("id employer: ");
-//                String id = in.next();
-//                System.out.print("new place_of_birth: ");
-//                String new_place_of_birth = in.next();
-//                try {
-//                    stems.executeUpdate(String.format("UPDATE people SET place_of_birth = '%s' where id = %s", new_place_of_birth, id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID сотрудника, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новое место рождения сотрудника: ");
+                String newPlace = in.next();
+                manageEmployee.updateEmployeeBirthplace(sessionFactory.openSession(), existingId, newPlace);
             });
             changeMenu.addItem(6, "salary", (stems, in) -> {
-//                System.out.print("id employer: ");
-//                String id = in.next();
-//                System.out.print("new salary: ");
-//                String new_salary = in.next();
-//                try {
-//                    stems.executeUpdate(String.format("UPDATE people SET salary = %s where id = %s", new_salary, id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID сотрудника, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новую зарплату сотрудника: ");
+                int newSalary = in.nextInt();
+                manageEmployee.updateEmployeeSalary(sessionFactory.openSession(), existingId, newSalary);
             });
-            changeMenu.addItem(7, "family_status", (stems, in) -> {
-//                System.out.print("id employer: ");
-//                String id = in.next();
-//                System.out.print("new family_status: ");
-//                String new_family_status = in.next();
-//                try {
-//                    stems.executeUpdate(String.format("UPDATE people SET family_status = %s where id = %s", new_family_status, id));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+            changeMenu.addItem(7, "department", (stems, in) -> {
+                System.out.println("Введите ID сотрудника, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новый департамент: ");
+                int newId = in.nextInt();
+                manageEmployee.updateEmployeeDepartment(sessionFactory.openSession(), existingId, newId);
+            });
+            changeDepartmentMenu.addItem(1, "id", (stems, in) -> {
+                System.out.println("Введите ID департамента, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новое название департамента: ");
+                String newName = in.next();
+                manageEmployee.updateDepartmentTitle(sessionFactory.openSession(), existingId, newName);
+            });
+            changeDepartmentMenu.addItem(2, "description", (stems, in) -> {
+                System.out.println("Введите ID департамента, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите новое описание департамента: ");
+                String newName = in.next();
+                manageEmployee.updateDepartmentDescription(sessionFactory.openSession(), existingId, newName);
+            });
+            changeDepartmentMenu.addItem(3, "director", (stems, in) -> {
+                System.out.println("Введите ID департамента, чтобы изменить: ");
+                int existingId = in.nextInt();
+                System.out.println("Введите ID нового директора департамента: ");
+                int directorId = in.nextInt();
+                Session session3 = sessionFactory.openSession();
+                Employee employee3 = (Employee) session3.get(Employee.class, directorId);
+                manageEmployee.updateDepartmentDirector(sessionFactory.openSession(), existingId, employee3);
             });
             menu.addItem(1, "Добавить сотрудника", (stems, in) -> {
-//                try {
-////                    System.out.print("id: ");
-////                    int id = in.nextInt();
-//                    System.out.print("firstname: ");
-//                    String firstname = in.next();
-//                    System.out.print("surname: ");
-//                    String surname = in.next();
-//                    System.out.print("date_of_birth: ");
-//                    String date_of_birth = in.next();
-//                    System.out.print("place_of_birth: ");
-//                    String place_of_birth = in.next();
-//                    System.out.print("salary: ");
-//                    String salary = in.next();
-//                    System.out.print("family_status: ");
-//                    String family_status = in.next();
-//                    stems.executeUpdate(String.format("INSERT INTO people(" +
-//                                    "firstname, surname, date_of_birth, place_of_birth, salary, family_status) " +
-//                                    "VALUES ('%s','%s','%s','%s',%s,%s)", firstname, surname, date_of_birth, place_of_birth,
-//                            salary, family_status)
-//                    );
-//                    System.out.println("Сотрудник успешно добавлен в базу!");
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.print("firstname: ");
+                String firstname = in.next();
+                System.out.print("surname: ");
+                String surname = in.next();
+                System.out.print("date_of_birth: ");
+                String date_of_birth = in.next();
+                System.out.print("place_of_birth: ");
+                String place_of_birth = in.next();
+                System.out.print("salary: ");
+                int salary = in.nextInt();
+                System.out.print("department: ");
+                int department = in.nextInt();
+                Session session1 = sessionFactory.openSession();
+
+                Department department1 = (Department) session1.get(Department.class, department);
+                Integer newEmployeeId = manageEmployee.addEmployee(session1, firstname, surname, date_of_birth, place_of_birth, salary, department1);
+
+                System.out.printf("Сотрудник ID: %d успешно добавлен в базу!%n", newEmployeeId);
             });
             menu.addItem(2, "Получить сотрудника по ID", (stems, in) -> {
-                manageEmployee.getEmployeeById(session, in.nextInt());
+                System.out.print("Введите ID: ");
+                manageEmployee.getEmployeeById(sessionFactory.openSession(), in.nextInt());
             });
             menu.addItem(3, "Получить сотрудника по имени", (stems, in) -> {
-                System.out.print("Write name: ");
-                String name = in.next();
-//                    Task8.printouts(stems.executeQuery("SELECT * FROM people WHERE firstname = '" + name + "'"));
+                System.out.print("Введите Имя: ");
+                manageEmployee.getEmployeeByName(sessionFactory.openSession(), in.next());
             });
             menu.addItem(4, "Получить сотрудника по дате рождения", (stems, in) -> {
-                System.out.print("Write date of birth: ");
-                String date_of_birth = in.next();
-//                    Task8.printouts(stems.executeQuery("SELECT * FROM people WHERE date_of_birth = '" + date_of_birth + "'"));
+                System.out.print("Введите дату рождения: ");
+                manageEmployee.getEmployeeByBirthDate(sessionFactory.openSession(), in.next());
             });
             menu.addItem(5, "Изменить информацию о сотруднике", (stems, in) -> {
                 changeMenu.printMenu();
@@ -209,40 +197,21 @@ public class MainMenu {
 //                }
             });
             menu.addItem(7, "Получить общую зарплату", (stems, in) -> {
-//                try {
-//                    ResultSet res = stems.executeQuery("SELECT SUM(people.salary) FROM people");
-//                    res.next();
-//                    System.out.println(String.format("Общая зарплата: %s", res.getString(1)));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                manageEmployee.getAllSalary(sessionFactory.openSession());
             });
             menu.addItem(8, "Получить сотрудников по департаменту", (stems, in) -> {
-//                try {
-//                    ResultSet res = stems.executeQuery("SELECT SUM(people.salary) FROM people");
-//                    res.next();
-//                    System.out.println(String.format("Общая зарплата: %s", res.getString(1)));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID департамента: ");
+                manageEmployee.getEmployeesByDepartment(sessionFactory.openSession(), in.nextInt());
             });
             menu.addItem(9, "Вывести все информации о департаменте", (stems, in) -> {
-//                try {
-//                    ResultSet res = stems.executeQuery("SELECT SUM(people.salary) FROM people");
-//                    res.next();
-//                    System.out.println(String.format("Общая зарплата: %s", res.getString(1)));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                System.out.println("Введите ID департамента: ");
+                manageEmployee.getDepartmentById(sessionFactory.openSession(), in.nextInt());
             });
             menu.addItem(10, "Изменить любую информацию о департаменте.", (stems, in) -> {
-//                try {
-//                    ResultSet res = stems.executeQuery("SELECT SUM(people.salary) FROM people");
-//                    res.next();
-//                    System.out.println(String.format("Общая зарплата: %s", res.getString(1)));
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+                changeDepartmentMenu.printMenu();
+                System.out.print(": ");
+                int selectedOption = in.nextInt();
+                changeDepartmentMenu.run(selectedOption, null, in);
             });
             Scanner in = new Scanner(System.in);
             do {

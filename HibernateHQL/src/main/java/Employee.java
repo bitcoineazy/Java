@@ -1,7 +1,22 @@
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "people")
 public class Employee {
+    @Id
+    @GeneratedValue    (strategy=GenerationType.SEQUENCE,
+            generator="users_seq")
+    @SequenceGenerator (name="users_seq",
+            sequenceName="SEQ_USER",
+            allocationSize=5)
+    @Column (name="id")
     int id;
+
+    @Column(name = "firstname")
     String firstName;
+    @Column(name = "surname")
     String surname;
+    @Column(name = "date_of_birth")
     String birthDate;
 
     public Employee() {
@@ -25,6 +40,7 @@ public class Employee {
         this.birthDate = birthDate;
     }
 
+    @Column(name = "place_of_birth")
     String birthPlace;
 
     public String getBirthPlace() {
@@ -35,6 +51,7 @@ public class Employee {
         this.birthPlace = birthPlace;
     }
 
+    @Column(name = "salary")
     int salary;
 
     public int getSalary() {
@@ -44,7 +61,9 @@ public class Employee {
     public void setSalary(int salary) {
         this.salary = salary;
     }
-
+    @ManyToOne(fetch= FetchType.LAZY,
+            cascade= CascadeType.ALL)
+    @Column(name = "department")
     Department department;
 
     public Department getDepartment() {
@@ -92,6 +111,8 @@ public class Employee {
                 ", firstName='" + firstName + '\'' +
                 ", surname='" + surname + '\'' +
                 ", birthplace='" + birthPlace + '\'' +
+                ", salary='" + salary + '\'' +
+                ", department='" + department.getId() + '\'' +
                 '}';
     }
 }

@@ -1,8 +1,5 @@
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
 
 import java.util.List;
@@ -56,12 +53,11 @@ public class ManageEmployee {
 //        manageEmployee.getEmployeeByBirthDate("2000-01-01");
     }
 
-    public void getAllEmployees() {
-        Session session = sessionFactory.openSession();
+    public void getAllEmployees(Session session) {
         Transaction tx = null;
 
         try {
-            tx = session.beginTransaction();
+//            tx = session.beginTransaction();
             List<Employee> employees = session.createQuery("FROM Employee").list();
             for (Employee employee : employees) {
                 System.out.printf("Employee:");
@@ -79,19 +75,16 @@ public class ManageEmployee {
                 System.out.println("\t\tDescription: " + department.getDescription());
                 System.out.println("\t\tDirector: " + department.getDirector());
             }
-            tx.commit();
+//            tx.commit();
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
+//            if (tx!=null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 
-    public void getAllDepartments() {
-
+    public void getAllDepartments(Session session) {
         Transaction tx = null;
-        try (Session session = sessionFactory.openSession()) {
+        try {
             tx = session.beginTransaction();
             List<Department> departments = session.createQuery("FROM Department").list();
             for (Department department : departments) {
@@ -113,14 +106,91 @@ public class ManageEmployee {
         }
     }
 
-    public Integer addEmployee(String firstname, String surname, String birthDate, String birthPlace, int salary, Department department){
-        Session session = sessionFactory.openSession();
+    public void getDepartmentById(Session session, int id) {
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            List<Department> departments = session.createQuery(String.format("FROM Department WHERE id='%s'", id)).list();
+            for (Department department : departments) {
+                System.out.println("Department:");
+                System.out.print("\tID: " + department.getId());
+                System.out.print("\tTitle: " + department.getTitle());
+                System.out.print("\tDescription: " + department.getDescription());
+                Employee director = department.getDirector();
+                System.out.println("\tDirector: ");
+                System.out.println("\t\tID: " + director.getId());
+                System.out.println("\t\tFirstname: " + director.getFirstName());
+                System.out.println("\t\tSurname: " + director.getSurname());
+                System.out.println("\t\tSalary: " + director.getSalary());
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    public void updateDepartmentTitle(Session session, int id, String title){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Department department = (Department)session.get(Department.class, id);
+            department.setTitle(title);
+            session.update(department);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateDepartmentDescription(Session session, int id, String description){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Department department = (Department)session.get(Department.class, id);
+            department.setDescription(description);
+            session.update(department);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateDepartmentDirector(Session session, int id, Employee director){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Department department = (Department)session.get(Department.class, id);
+            department.setDirector(director);
+            session.update(department);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+
+
+    public Integer addEmployee(Session session, String firstname, String surname, String birthDate, String birthPlace, int salary, Department department){
+//        Session session = sessionFactory.openSession();
         Transaction tx = null;
         Integer employeeID = null;
 
         try {
             tx = session.beginTransaction();
             Employee employee = new Employee(firstname, surname, birthDate, birthPlace, salary, department);
+            employee.setBirthPlace(birthPlace);
+            employee.setBirthDate(birthDate);
+            employee.setSurname(surname);
             employeeID = (Integer) session.save(employee);
             tx.commit();
         } catch (HibernateException e) {
@@ -135,19 +205,21 @@ public class ManageEmployee {
     public void getEmployeeById(Session session, int employeeId) {
         Transaction tx = null;
         Employee employee = null;
-        try (session) {
+        try {
             tx = session.beginTransaction();
             employee = (Employee) session.get(Employee.class, employeeId);
             System.out.println(employee.toString());
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
+        } finally {
+            session.close();
         }
     }
 
-    public void getEmployeeByName(String firstname) {
+    public void getEmployeeByName(Session session, String firstname) {
         Transaction tx = null;
-        Session session = sessionFactory.openSession();
+//        Session session = sessionFactory.openSession();
         try {
             tx = session.beginTransaction();
             List<Employee> employees = session.createQuery(String.format("FROM Employee WHERE firstName='%s'", firstname)).list();
@@ -163,9 +235,9 @@ public class ManageEmployee {
         }
     }
 
-    public void getEmployeeByBirthDate(String birthDate) {
+    public void getEmployeeByBirthDate(Session session, String birthDate) {
         Transaction tx = null;
-        Session session = sessionFactory.openSession();
+//        Session session = sessionFactory.openSession();
         try {
             tx = session.beginTransaction();
             List<Employee> employees = session.createQuery(String.format("FROM Employee WHERE birthDate='%s'", birthDate)).list();
@@ -180,4 +252,186 @@ public class ManageEmployee {
             session.close();
         }
     }
+
+    public void updateEmployeeId(Session session, Integer EmployeeID, int id){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, EmployeeID);
+
+//            Employee new_employee = employee;
+            employee.setId(id);
+//            Integer new_employeeID = (Integer) session.save(new_employee);
+
+
+            Query<Department> queryDeps = session.createQuery(String.format("FROM Department WHERE director='%d'", employee.getId()));
+            List<Department> departments = queryDeps.getResultList();
+            for (Department department: departments) {
+                System.out.println(department.toString());
+                department.setDirector(employee);
+            }
+
+
+
+//            System.out.println(department.getId(5));
+//            Department department = (Department)session.get(Department.class, employee.getDepartment());
+
+//            employee.setId(id);
+
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateEmployeeName(Session session, Integer EmployeeID, String name ){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, EmployeeID);
+            employee.setFirstName(name);
+            session.update(employee);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateEmployeeSurname(Session session, Integer EmployeeID, String surname ){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, EmployeeID);
+            employee.setSurname(surname);
+            session.update(employee);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateEmployeeBirthdate(Session session, Integer EmployeeID, String birthdate){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, EmployeeID);
+            employee.setBirthDate(birthdate);
+            session.update(employee);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateEmployeeBirthplace(Session session, Integer EmployeeID, String birthplace){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, EmployeeID);
+            employee.setBirthPlace(birthplace);
+            session.update(employee);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateEmployeeSalary(Session session, Integer EmployeeID, int salary ){
+//        Session session = session.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, EmployeeID);
+            employee.setSalary(salary);
+            session.update(employee);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateEmployeeDepartment(Session session, Integer EmployeeID, int departmentId ){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Employee employee = (Employee)session.get(Employee.class, EmployeeID);
+
+            Department department = (Department)session.get(Department.class, departmentId);
+
+            employee.setDepartment(department);
+            session.update(employee);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void getAllSalary(Session session){
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Long sumSalary = (Long) session.createQuery("SELECT sum(salary) from Employee")
+                    .getSingleResult();
+            System.out.println("Общая зарплата сотрудников: " + sumSalary);
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void getEmployeesByDepartment(Session session, int departmentId){
+        Transaction tx = null;
+        try {
+
+            tx = session.beginTransaction();
+            List<Employee> employees = session.createQuery(String.format("FROM Employee WHERE department='%s'", departmentId)).list();
+            for (Employee employee : employees) {
+                System.out.println("Employee:");
+                System.out.println("\tID: " + employee.getId());
+                System.out.print("\tFirst Name: " + employee.getFirstName());
+                System.out.print("\tLast Name: " + employee.getSurname());
+                System.out.println("\tBirth Date:" + employee.getBirthDate());
+                System.out.println("\tBirth Place:" + employee.getBirthPlace());
+                System.out.println("\tSalary:" + employee.getSalary());
+
+                Department department = employee.getDepartment();
+                System.out.println("\tDepartment: ");
+                System.out.println("\t\tID: " + department.getId());
+                System.out.println("\t\tTitle: " + department.getTitle());
+                System.out.println("\t\tDescription: " + department.getDescription());
+                System.out.println("\t\tDirector: " + department.getDirector());
+            }
+        } catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+
 }
