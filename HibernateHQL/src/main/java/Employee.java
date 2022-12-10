@@ -62,11 +62,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "department")
-    @JoinTable(name = "people",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "department"))
+    // @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    // @Column(name = "department")
+    // @JoinTable(name = "people",
+    //         joinColumns = @JoinColumn(name = "id"),
+    //         inverseJoinColumns = @JoinColumn(name = "department"))
     Department department;
 
     public Department getDepartment() {

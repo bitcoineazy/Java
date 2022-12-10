@@ -10,8 +10,8 @@
         <property name="birthPlace" column="place_of_birth" type="string" />
         <property name="salary" column="salary" type="int" />
 <!--        <property name="department" column="department" type="int" />-->
-        <many-to-one name = "department" column = "department" unique="true"
-                     class="Department" not-null="false" cascade="all"/>
+        <many-to-one name = "department" column = "department" class="Department" not-null="false" unique="false"/>
+
     </class>
 
 </hibernate-mapping>

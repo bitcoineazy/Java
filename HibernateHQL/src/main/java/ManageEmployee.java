@@ -60,20 +60,24 @@ public class ManageEmployee {
 //            tx = session.beginTransaction();
             List<Employee> employees = session.createQuery("FROM Employee").list();
             for (Employee employee : employees) {
-                System.out.printf("Employee:");
+                System.out.println("Employee:");
                 System.out.println("\tID: " + employee.getId());
-                System.out.print("\tFirst Name: " + employee.getFirstName());
-                System.out.print("\tLast Name: " + employee.getSurname());
+                System.out.println("\tFirst Name: " + employee.getFirstName());
+                System.out.println("\tLast Name: " + employee.getSurname());
                 System.out.println("\tBirth Date:" + employee.getBirthDate());
                 System.out.println("\tBirth Place:" + employee.getBirthPlace());
                 System.out.println("\tSalary:" + employee.getSalary());
-
+                
                 Department department = employee.getDepartment();
-                System.out.println("\tDepartment: ");
+                if (department != null) {
+                    System.out.println("\tDepartment: ");
                 System.out.println("\t\tID: " + department.getId());
                 System.out.println("\t\tTitle: " + department.getTitle());
                 System.out.println("\t\tDescription: " + department.getDescription());
                 System.out.println("\t\tDirector: " + department.getDirector());
+                } else {
+                    System.out.println("Департамент отсутствует");
+                }
             }
 //            tx.commit();
         } catch (HibernateException e) {
@@ -89,15 +93,20 @@ public class ManageEmployee {
             List<Department> departments = session.createQuery("FROM Department").list();
             for (Department department : departments) {
                 System.out.println("Department:");
-                System.out.print("\tID: " + department.getId());
-                System.out.print("\tTitle: " + department.getTitle());
-                System.out.print("\tDescription: " + department.getDescription());
+                System.out.println("\tID: " + department.getId());
+                System.out.println("\tTitle: " + department.getTitle());
+                System.out.println("\tDescription: " + department.getDescription());
                 Employee director = department.getDirector();
-                System.out.println("\tDirector: ");
-                System.out.println("\t\tID: " + director.getId());
-                System.out.println("\t\tFirstname: " + director.getFirstName());
-                System.out.println("\t\tSurname: " + director.getSurname());
-                System.out.println("\t\tSalary: " + director.getSalary());
+                if (director != null) {
+                    System.out.println("\tDirector: ");
+                    System.out.println("\t\tID: " + director.getId());
+                    System.out.println("\t\tFirstname: " + director.getFirstName());
+                    System.out.println("\t\tSurname: " + director.getSurname());
+                    System.out.println("\t\tSalary: " + director.getSalary());
+                } else {
+                    System.out.println("Директор отсутствует");
+                }
+                
             }
             tx.commit();
         } catch (HibernateException e) {
@@ -113,15 +122,21 @@ public class ManageEmployee {
             List<Department> departments = session.createQuery(String.format("FROM Department WHERE id='%s'", id)).list();
             for (Department department : departments) {
                 System.out.println("Department:");
-                System.out.print("\tID: " + department.getId());
-                System.out.print("\tTitle: " + department.getTitle());
-                System.out.print("\tDescription: " + department.getDescription());
+                System.out.println("\tID: " + department.getId());
+                System.out.println("\tTitle: " + department.getTitle());
+                System.out.println("\tDescription: " + department.getDescription());
+                
                 Employee director = department.getDirector();
-                System.out.println("\tDirector: ");
-                System.out.println("\t\tID: " + director.getId());
-                System.out.println("\t\tFirstname: " + director.getFirstName());
-                System.out.println("\t\tSurname: " + director.getSurname());
-                System.out.println("\t\tSalary: " + director.getSalary());
+                if (director != null) {
+                    System.out.println("\tDirector: ");
+                    System.out.println("\t\tID: " + director.getId());
+                    System.out.println("\t\tFirstname: " + director.getFirstName());
+                    System.out.println("\t\tSurname: " + director.getSurname());
+                    System.out.println("\t\tSalary: " + director.getSalary());
+                } else {
+                    System.out.println("\tDirector: ");
+                    System.out.println("\t\tДиректор отсутствует");
+                }
             }
             tx.commit();
         } catch (HibernateException e) {
@@ -168,7 +183,7 @@ public class ManageEmployee {
             tx = session.beginTransaction();
             Department department = (Department)session.get(Department.class, id);
             department.setDirector(director);
-            session.update(department);
+            session.save(department);
             tx.commit();
         } catch (HibernateException e) {
             if (tx!=null) tx.rollback();
@@ -211,10 +226,13 @@ public class ManageEmployee {
             List<Department> departments = session.createQuery(String.format("FROM Department WHERE director='%s'", employeeID)).list();
             for (Department department: departments) {
                 System.out.println(department);
-                session.evict(department);
-                session.delete(department);
+                department.setDirector(null);
+                //session.evict(department);
+                //session.delete(department);
             }
-            session.evict(employee);
+            // session.evict(employee);
+            // session.delete(employee);
+            //session.detach(employee);
             session.delete(employee);
             tx.commit();
         } catch (HibernateException e) {
@@ -292,6 +310,7 @@ public class ManageEmployee {
             for (Department department: departments) {
                 System.out.println(department.toString());
                 department.setDirector(employee);
+                session.save(department);
             }
 
             tx.commit();
@@ -427,8 +446,8 @@ public class ManageEmployee {
             for (Employee employee : employees) {
                 System.out.println("Employee:");
                 System.out.println("\tID: " + employee.getId());
-                System.out.print("\tFirst Name: " + employee.getFirstName());
-                System.out.print("\tLast Name: " + employee.getSurname());
+                System.out.println("\tFirst Name: " + employee.getFirstName());
+                System.out.println("\tLast Name: " + employee.getSurname());
                 System.out.println("\tBirth Date:" + employee.getBirthDate());
                 System.out.println("\tBirth Place:" + employee.getBirthPlace());
                 System.out.println("\tSalary:" + employee.getSalary());
