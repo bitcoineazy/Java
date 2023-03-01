@@ -1,17 +1,17 @@
 package com.example.studentdbspring;
 
-import lombok.Data;
+// import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Data
+// @Data
 @Entity
 @Table(name = "student")
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
