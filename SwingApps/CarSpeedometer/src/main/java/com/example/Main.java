@@ -14,6 +14,7 @@ public class Main extends JFrame {
     // variable used to draw speedometer needle below
     // updates on delay
     public int currentSpeed = 0;
+    public boolean isIncreasing = true;
 
     private DrawCanvas canvas;
 
@@ -23,9 +24,17 @@ public class Main extends JFrame {
 
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                currentSpeed += 10;
-                if (currentSpeed > 260) {
-                    currentSpeed = 0;
+                // Increase speed to max then to min and again..
+                if (isIncreasing) {
+                    currentSpeed += 10;
+                    if (currentSpeed > 260) {
+                        isIncreasing = false;
+                    }
+                } else {
+                    currentSpeed -= 10;
+                    if (currentSpeed < 0) {
+                        isIncreasing = true;
+                    }
                 }
                 canvas.repaint();
             }
