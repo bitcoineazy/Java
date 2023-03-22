@@ -1,59 +1,55 @@
 package com.example;
 
-import java.util.Calendar;
-
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- *
- * Класс главного окна, который содержит холст для рисования
- */
-public class Main extends JFrame {
-    // Задаем фиксированные размеры окна
-    public static final int CANVAS_WIDTH = 640;
 
+public class Main extends JFrame {
+    public static final int CANVAS_WIDTH = 640;
     public static final int CANVAS_HEIGHT = 480;
 
-    // Холст для рисования
+    public int currentSpeed = 0;
+
     private DrawCanvas canvas;
 
-    // Инициализая Swing-объектов для вывода изображения
     public Main() {
-        canvas = new DrawCanvas(); // Создаем новый холст
-        int delay = 1000; // milliseconds
+        canvas = new DrawCanvas(); 
+        int delay = 50; 
+
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                currentSpeed += 10;
+                if (currentSpeed > 260) {
+                    currentSpeed = 0;
+                }
                 canvas.repaint();
             }
         };
+
+        // Update screen each 50 milisec
         new Timer(delay, taskPerformer).start();
         canvas.setPreferredSize(new Dimension(CANVAS_WIDTH,
                 CANVAS_HEIGHT));
-        // Задаем размер холста
-        // Получаем ссылку на главный холст фрейма (гдавного окна приложения)
+
         Container cp = getContentPane();
-        // Добавляем на него созданный холст
         cp.add(canvas);
 
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE); // Определяем действие на кнопку "закрыть"
-        this.pack(); // Размещаем компоненты и задаем размер окна
-        this.setTitle("Спидометр"); // Заголовок главного окна
-        this.setVisible(true); // Визуализация фрейма (гдавного окна приложения)
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE); 
+        this.pack(); 
+        this.setTitle("Спидометр");
+        this.setVisible(true);  
     }
 
-    /**
-     * Холст (JPanel) для рисования - определяем как внутренний класс
-     */
     private class DrawCanvas extends JPanel {
+
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-            setBackground(Color.WHITE); // Set the background color
+            setBackground(Color.WHITE);
 
             BasicStroke lineBold = new BasicStroke(3);
             BasicStroke lineThin = new BasicStroke(2);
@@ -80,7 +76,6 @@ public class Main extends JFrame {
 
             // Draw the speedometer markings
             for (int i = 0; i <= 160; i += 1) {
-                // Draw big numbers
                 g.setColor(Color.GRAY);
                 g2.setStroke(lineThin);
                 double angle = (i * 1.6) * Math.PI / 180 - 2.3;
@@ -97,7 +92,7 @@ public class Main extends JFrame {
                     x2 = (int) (centerX + Math.sin(angle) * (radius - 30));
                     y2 = (int) (centerY - Math.cos(angle) * (radius - 30));
                     g.drawLine(x1, y1, x2, y2);
-                    Font font = new Font("Arial", Font.BOLD, 20); // Create a font with size 16 and bold style
+                    Font font = new Font("Arial", Font.BOLD, 20); 
                     g.setFont(font);
                     String number = Integer.toString(i);
                     FontMetrics fm = g.getFontMetrics();
@@ -112,7 +107,7 @@ public class Main extends JFrame {
                     x2 = (int) (centerX + Math.sin(angle) * (radius - 23));
                     y2 = (int) (centerY - Math.cos(angle) * (radius - 23));
                     g.drawLine(x1, y1, x2, y2);
-                    Font font = new Font("Arial", Font.BOLD, 14); // Create a font with size 16 and bold style
+                    Font font = new Font("Arial", Font.BOLD, 14);
                     g.setFont(font);
                     String number = Integer.toString(i);
                     FontMetrics fm = g.getFontMetrics();
@@ -124,20 +119,25 @@ public class Main extends JFrame {
                 } 
             }
 
-            // // Draw the speedometer needle
-            // double speedAngle = (360 / 10.0) * 8 * Math.PI / 180;
-            // int needleX = (int) (centerX + Math.sin(speedAngle) * (radius - 50));
-            // int needleY = (int) (centerY - Math.cos(speedAngle) * (radius - 50));
-            // g.setColor(Color.RED);
-            // g.drawLine(centerX, centerY, needleX, needleY);
+            // Draw the speedometer needle
+            double speedAngle = 450 + (currentSpeed) * 1 * Math.PI / 180;
+            int needleX = (int) (centerX + Math.sin(speedAngle) * (radius - 70));
+            int needleY = (int) (centerY - Math.cos(speedAngle) * (radius - 70));
+            g.setColor(Color.RED);
+            g.drawLine(centerX, centerY, needleX, needleY);
+            
+            // Draw red circle in center like in real car speedometers
+            g.setColor(Color.RED);
+            int centerCircleRadius = radius / 14;
+            g.fillOval(centerX - centerCircleRadius, centerY - centerCircleRadius, centerCircleRadius * 2, centerCircleRadius * 2);
+
         }
     }
 
-    /** в main создаем экземпляр приложения */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Main(); // Вызываем конструктор класса главного окна
+                new Main();
             }
         });
     }
