@@ -11,6 +11,8 @@ public class Main extends JFrame {
     public static final int CANVAS_WIDTH = 640;
     public static final int CANVAS_HEIGHT = 480;
 
+    // variable used to draw speedometer needle below
+    // updates on delay
     public int currentSpeed = 0;
 
     private DrawCanvas canvas;
